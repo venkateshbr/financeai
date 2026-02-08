@@ -6,7 +6,8 @@ import ClientDashboard from "./features/client/ClientDashboard";
 import ClientDocuments from "./features/client/ClientDocuments";
 import ClientProfile from "./features/client/ClientProfile";
 import InternalDashboard from "./features/internal/InternalDashboard";
-import InternalVerification from "./features/internal/InternalVerification";
+import InternalReview from "./features/internal/InternalReview";
+import InvoiceReviewDetail from "./features/internal/InvoiceReviewDetail";
 
 function App() {
   return (
@@ -22,11 +23,11 @@ function App() {
           <Route path="profile" element={<ClientProfile />} />
         </Route>
 
-        {/* Internal Routes */}
         <Route path="/internal" element={<InternalLayout />}>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<InternalDashboard />} />
-          <Route path="reviews" element={<InternalVerification />} />
+          <Route path="reviews" element={<InternalReview />} />
+          <Route path="reviews/:id" element={<InvoiceReviewDetail />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { LayoutDashboard, FileText, UserCircle } from "lucide-react";
 import { Sidebar } from "@/components/common/Sidebar";
+import { ChatWidget } from "@/features/client/components/ChatWidget";
 
 const clientLinks = [
     { label: "Dashboard", href: "/client/dashboard", icon: LayoutDashboard },
@@ -17,6 +18,7 @@ export default function ClientLayout() {
                     <Outlet />
                 </div>
             </main>
+            <ChatWidget />
         </div>
     );
 }

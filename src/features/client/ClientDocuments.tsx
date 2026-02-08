@@ -5,40 +5,20 @@ import { FileText, CheckCircle } from "lucide-react";
 
 export default function ClientDocuments() {
     const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
 
-    const handleUpload = async (files: File[]) => {
-        // Optimistic UI update
-        setUploadedFiles((prev) => [...files, ...prev]);
+    const handleUpload = (data: any) => {
+        console.log("Upload success callback:", data);
+        // Create a pseudo-file object or just a display object
+        const newFile = {
+            name: `Invoice ${data.invoice.reference || data.invoice.invoiceID}`,
+            lastModified: Date.now(),
+            size: 0,
+            type: 'application/pdf'
+        } as File;
 
-        const webhookUrl = import.meta.env.VITE_N8N_WEBHOOK_URL;
-        if (!webhookUrl) {
-            console.error("Webhook URL not configured");
-            alert("System Error: Webhook URL not configured");
-            return;
-        }
-
-        // Upload each file
-        for (const file of files) {
-            const formData = new FormData();
-            formData.append("file", file);
-            formData.append("client", "Acme Corp"); // Mock client ID
-            formData.append("uploadedAt", new Date().toISOString());
-
-            try {
-                const response = await fetch(webhookUrl, {
-                    method: "POST",
-                    body: formData,
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Upload failed: ${response.statusText}`);
-                }
-                console.log(`Uploaded ${file.name} successfully`);
-            } catch (error) {
-                console.error(`Error uploading ${file.name}:`, error);
-                alert(`Failed to upload ${file.name}. Please try again.`);
-            }
-        }
+        setUploadedFiles((prev) => [newFile, ...prev]);
+        setRefreshTrigger(prev => prev + 1);
     };
 
     return (
@@ -76,7 +56,7 @@ export default function ClientDocuments() {
                 </div>
 
                 <div className="space-y-6">
-                    <RecentDocuments />
+                    <RecentDocuments refreshTrigger={refreshTrigger} />
                 </div>
             </div>
         </div>
