@@ -5,11 +5,12 @@ import { cn } from "@/lib/utils";
 
 interface FileUploadProps {
     onUpload: (data: any) => void;
+    onProcessingStart?: (requestId: string) => void;
     className?: string;
 }
 
 
-export function FileUpload({ onUpload, className }: FileUploadProps) {
+export function FileUpload({ onUpload, onProcessingStart, className }: FileUploadProps) {
     const [uploading, setUploading] = useState(false);
     const [progress, setProgress] = useState(0);
     const [status, setStatus] = useState<"idle" | "processing" | "success" | "error">("idle");
@@ -99,6 +100,7 @@ export function FileUpload({ onUpload, className }: FileUploadProps) {
 
                 const data = await res.json();
                 if (data.requestId) {
+                    if (onProcessingStart) onProcessingStart(data.requestId);
                     await pollStatus(data.requestId);
                 } else {
                     throw new Error("No Request ID returned");

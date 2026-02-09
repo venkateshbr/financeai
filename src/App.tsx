@@ -5,6 +5,7 @@ import InternalLayout from "./layout/InternalLayout";
 import ClientDashboard from "./features/client/ClientDashboard";
 import ClientDocuments from "./features/client/ClientDocuments";
 import ClientProfile from "./features/client/ClientProfile";
+import BulkUpload from "./features/client/BulkUpload";
 import InternalDashboard from "./features/internal/InternalDashboard";
 import InternalReview from "./features/internal/InternalReview";
 import InvoiceReviewDetail from "./features/internal/InvoiceReviewDetail";
@@ -20,6 +21,7 @@ function App() {
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<ClientDashboard />} />
           <Route path="documents" element={<ClientDocuments />} />
+          <Route path="bulk-upload" element={<BulkUpload />} />
           <Route path="profile" element={<ClientProfile />} />
         </Route>
 

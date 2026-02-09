@@ -1,11 +1,12 @@
 import { Outlet } from "react-router-dom";
-import { LayoutDashboard, FileText, UserCircle } from "lucide-react";
+import { LayoutDashboard, FileText, UserCircle, Upload } from "lucide-react";
 import { Sidebar } from "@/components/common/Sidebar";
 import { ChatWidget } from "@/features/client/components/ChatWidget";
 
 const clientLinks = [
     { label: "Dashboard", href: "/client/dashboard", icon: LayoutDashboard },
     { label: "Documents", href: "/client/documents", icon: FileText },
+    { label: "Bulk Upload", href: "/client/bulk-upload", icon: Upload },
     { label: "Company Profile", href: "/client/profile", icon: UserCircle },
 ];
 

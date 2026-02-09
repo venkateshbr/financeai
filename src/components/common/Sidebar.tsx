@@ -18,7 +18,7 @@ export function Sidebar({ title, links }: SidebarProps) {
         <aside className="w-64 bg-card border-r border-border h-screen sticky top-0 flex flex-col hidden md:flex">
             <div className="p-6 border-b border-border">
                 <h2 className="text-xl font-bold tracking-tight flex items-center gap-2">
-                    Finance<span className="text-primary">AI</span>
+                    Finance Automation<span className="text-primary"></span>
                     <span className="text-xs font-normal bg-muted px-2 py-0.5 rounded-full text-muted-foreground ml-auto">
                         {title}
                     </span>

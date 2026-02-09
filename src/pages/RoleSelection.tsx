@@ -9,7 +9,7 @@ export default function RoleSelection() {
         <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
             <div className="text-center mb-12 space-y-4">
                 <h1 className="text-4xl font-bold tracking-tight text-foreground">
-                    Finance<span className="text-primary">AI</span> Portal
+                    Finance Automation<span className="text-primary"></span> Portal
                 </h1>
                 <p className="text-muted-foreground text-lg">
                     Select your portal to continue
