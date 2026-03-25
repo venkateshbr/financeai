@@ -35,7 +35,7 @@ const upload = multer({ dest: 'uploads/' });
 const client_id = process.env.XERO_CLIENT_ID;
 const client_secret = process.env.XERO_CLIENT_SECRET;
 const redirectUrl = process.env.XERO_REDIRECT_URI || 'http://localhost:5173/api/auth/xero/callback';
-const scopes = 'accounting.transactions accounting.settings.read accounting.contacts accounting.reports.read';
+const scopes = 'accounting.transactions accounting.settings.read accounting.contacts accounting.reports.read accounting.attachments';
 
 const xero = new XeroClient({
     clientId: client_id,
@@ -61,9 +61,13 @@ const initializeXero = async () => {
         xero.setTokenSet(tokenSet);
         console.log("Xero Client Credentials Auth Successful");
 
-        // await xero.updateTenants(false); // Can't fetch tenants with Client Credentials
-        // const activeTenant = xero.tenants[0]; 
-        console.log("Active Tenant: (Custom Connection - No Tenant ID needed)");
+        await xero.updateTenants(false);
+        const activeTenant = xero.tenants[0]; 
+        if (activeTenant) {
+            console.log("Active Tenant ID:", activeTenant.tenantId);
+        } else {
+            console.log("Warning: No active tenants found for this connection.");
+        }
     } catch (error) {
         console.error("Error initializing Xero:", error);
     }
@@ -109,9 +113,12 @@ const ensureXeroAuth = async (req, res, next) => {
         // Update SDK state just in case
         xero.setTokenSet(globalTokenSet);
 
-        // For Custom Connections, we don't need to fetch tenants or use Tenant ID
-        // Passing an empty string usually tells the SDK/API to rely on the token
-        req.xeroTenantId = '';
+        // For M2M Custom Connections, we must pass the Tenant ID
+        if (xero.tenants && xero.tenants.length > 0) {
+            req.xeroTenantId = xero.tenants[0].tenantId;
+        } else {
+            throw new Error('No Xero tenant available for this M2M connection');
+        }
 
         next();
     } catch (err) {
