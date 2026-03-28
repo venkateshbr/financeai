@@ -27,7 +27,7 @@ export function RecentDocuments({ refreshTrigger, onInvoiceClick }: { refreshTri
             if (!res.ok) throw new Error("Failed to fetch documents");
             const data = await res.json();
             const sorted = data.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime());
-            setInvoices(sorted.slice(0, 5));
+            setInvoices(sorted.slice(0, 10));
         } catch (err) {
             console.error(err);
             setError("Could not load recent documents");
@@ -38,7 +38,7 @@ export function RecentDocuments({ refreshTrigger, onInvoiceClick }: { refreshTri
 
 
     return (
-        <div className="rounded-xl border bg-card text-card-foreground shadow col-span-4 lg:col-span-1 h-full flex flex-col">
+        <div className="rounded-xl border bg-card text-card-foreground shadow col-span-4 lg:col-span-1 flex flex-col">
             <div className="p-6 pb-2 flex justify-between items-start">
                 <div>
                     <h3 className="text-lg font-medium">Recent Draft Invoices</h3>
@@ -49,7 +49,7 @@ export function RecentDocuments({ refreshTrigger, onInvoiceClick }: { refreshTri
                 </button>
             </div>
 
-            <div className="p-4 space-y-4 flex-1 overflow-auto">
+            <div className="p-4 space-y-4 flex-1 max-h-[600px] overflow-y-auto custom-scrollbar">
                 {loading && invoices.length === 0 ? (
                     <div className="text-center py-8 text-muted-foreground text-sm">Loading...</div>
                 ) : error ? (

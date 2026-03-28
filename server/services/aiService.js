@@ -2,10 +2,25 @@ import OpenAI from 'openai';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const openai = new OpenAI({
-    baseURL: "https://openrouter.ai/api/v1",
-    apiKey: process.env.OPENROUTER_API_KEY,
-});
+let openai;
+if (process.env.AI_PROVIDER && process.env.AI_PROVIDER.toLowerCase() === 'ollama') {
+  // Use local Ollama endpoint
+  openai = new OpenAI({
+    baseURL: process.env.OLLAMA_URL,
+    apiKey: '' // Ollama does not require an API key
+  });
+} else {
+  // Default to OpenRouter
+  openai = new OpenAI({
+    baseURL: "https://openrouter.ai/api/v1/",
+    apiKey: process.env.OPENROUTER_API_KEY
+  });
+}
+
+// Debug logs
+console.log('AI Provider:', process.env.AI_PROVIDER);
+console.log('Base URL used:', process.env.OLLAMA_URL);
+
 
 // Helper to call LLM with JSON enforcement
 async function callLLM(model, systemPrompt, userContent) {
